@@ -20,14 +20,14 @@ export default function PostInput({ newPost, setNewPost, onAdd }) {
 
     return (
         <Fade in timeout={500}>
-            <Paper elevation={4} sx={{ p: { xs: 1, sm: 2 }, mb: 2, borderRadius: 4, bgcolor: "#f5f7fa" }}>
-                <Typography variant="h6" mb={1} color="primary" fontWeight={600}>
+            <Paper elevation={2} sx={{ p: 1, mb: 1, borderRadius: 2, bgcolor: "#f5f7fa" }}>
+                <Typography variant="subtitle1" mb={1} color="primary" fontWeight={600}>
                     Create a New Post
                 </Typography>
                 <Box
                     display="flex"
                     flexDirection="column"
-                    gap={1}
+                    gap={0.5}
                     component="form"
                     onSubmit={e => { e.preventDefault(); if (!isAddDisabled) onAdd(); }}
                 >
@@ -40,14 +40,13 @@ export default function PostInput({ newPost, setNewPost, onAdd }) {
                         onChange={handleChange}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <AddCircleOutlineIcon color={focused ? "primary" : "disabled"} />
-                                    </InputAdornment>
-                                ),
-                            },
+                        size="small"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <AddCircleOutlineIcon color={focused ? "primary" : "disabled"} />
+                                </InputAdornment>
+                            ),
                         }}
                         autoComplete="off"
                         required
@@ -55,7 +54,7 @@ export default function PostInput({ newPost, setNewPost, onAdd }) {
                     <TextField
                         fullWidth
                         multiline
-                        minRows={2}
+                        minRows={1}
                         name="content"
                         label="What's on your mind?"
                         variant="outlined"
@@ -63,6 +62,7 @@ export default function PostInput({ newPost, setNewPost, onAdd }) {
                         onChange={handleChange}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
+                        size="small"
                         autoComplete="off"
                         required
                     />
@@ -72,13 +72,14 @@ export default function PostInput({ newPost, setNewPost, onAdd }) {
                         color="primary"
                         disabled={isAddDisabled}
                         sx={{
-                            minWidth: 120,
+                            minWidth: 100,
                             alignSelf: { xs: "stretch", sm: "flex-end" },
-                            height: 40,
+                            height: 32,
                             fontWeight: 600,
                             letterSpacing: 1,
-                            boxShadow: 2,
+                            boxShadow: 1,
                         }}
+                        size="small"
                         endIcon={<AddCircleOutlineIcon />}
                     >
                         Add Post

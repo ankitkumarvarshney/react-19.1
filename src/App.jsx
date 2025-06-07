@@ -81,8 +81,8 @@ export default function App() {
       {view === "register" && <RegisterForm switchToLogin={() => setView("login")} />}
       {view === "posts" && (
         <Box>
-          <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-            <Typography variant="h4">Posts</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={.5}>
+            <Typography variant="h6">Posts</Typography>
             <Button variant="outlined" color="error" onClick={logout}>
               Logout
             </Button>

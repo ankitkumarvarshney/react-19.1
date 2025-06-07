@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Paper, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Paper, List, ListItem, ListItemText, Typography, Pagination, Box } from "@mui/material";
 import PostItem from "./PostItem";
+
+const POSTS_PER_PAGE = 3;
 
 export default function PostList({ posts, onDelete, onEdit }) {
     const [editingPostId, setEditingPostId] = useState(null);
     const [editContent, setEditContent] = useState("");
     const [editTitle, setEditTitle] = useState("");
+    const [page, setPage] = useState(1);
 
     const startEditing = (post) => {
         setEditingPostId(post.id);
@@ -26,27 +29,36 @@ export default function PostList({ posts, onDelete, onEdit }) {
         }
     };
 
+    // Pagination logic
+    const pageCount = Math.ceil(posts.length / POSTS_PER_PAGE);
+    const paginatedPosts =
+        posts.length > POSTS_PER_PAGE
+            ? posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE)
+            : posts;
+
+    const handlePageChange = (_, value) => setPage(value);
+
     return (
         <Paper
             elevation={4}
             sx={{
                 maxWidth: "100vw",
-                margin: "32px auto",
+                margin: "10px auto",
                 borderRadius: 3,
                 background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-                p: 2,
+                p: 1,
             }}
         >
-            <Typography variant="h5" sx={{ mb: 2, fontWeight: 700, textAlign: "center", color: "#3f51b5" }}>
+            {/* <Typography variant="h6" sx={{ mb: 2, fontWeight: 700, textAlign: "center", color: "#3f51b5" }}>
                 Posts
-            </Typography>
+            </Typography> */}
             <List>
                 {posts.length === 0 ? (
                     <ListItem>
                         <ListItemText primary="No posts available." />
                     </ListItem>
                 ) : (
-                    posts.map((post) => (
+                    paginatedPosts.map((post) => (
                         <PostItem
                             key={post.id}
                             post={post}
@@ -63,6 +75,16 @@ export default function PostList({ posts, onDelete, onEdit }) {
                     ))
                 )}
             </List>
+            {posts.length > POSTS_PER_PAGE && (
+                <Box display="flex" justifyContent="center" mt={.5}>
+                    <Pagination
+                        count={pageCount}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                    />
+                </Box>
+            )}
         </Paper>
     );
 }

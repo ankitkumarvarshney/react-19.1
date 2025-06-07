@@ -1,5 +1,4 @@
-import { ListItem, Avatar, Box, Stack, IconButton, Divider } from "@mui/material";
-import ArticleIcon from "@mui/icons-material/Article";
+import { ListItem, Box, Stack, IconButton, Divider } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostDisplay from "./PostDisplay";
@@ -47,9 +46,6 @@ export default function PostItem({
                     )
                 }
             >
-                <Avatar sx={{ bgcolor: "#3f51b5", mr: 2 }}>
-                    <ArticleIcon />
-                </Avatar>
                 {isEditing ? (
                     <PostEditForm
                         post={post}
