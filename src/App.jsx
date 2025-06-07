@@ -17,7 +17,7 @@ export default function App() {
 
   const [view, setView] = useState(token ? "posts" : "login");
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState("");
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
 
   useEffect(() => {
     if (token) {
@@ -38,14 +38,15 @@ export default function App() {
   }
 
   async function handleAddPost() {
-    if (!newPost.trim()) {
-      enqueueSnackbar("Post cannot be empty", { variant: "warning" });
+    const { title, content } = newPost;
+    if (!title.trim() || !content.trim()) {
+      enqueueSnackbar("Title and content cannot be empty", { variant: "warning" });
       return;
     }
     try {
-      const res = await addPost(newPost);
+      const res = await addPost(title, content);
       setPosts((prev) => [...prev, res.data]);
-      setNewPost("");
+      setNewPost({ title: "", content: "" });
       enqueueSnackbar("Post added", { variant: "success" });
     } catch {
       enqueueSnackbar("Failed to add post", { variant: "error" });
@@ -62,19 +63,20 @@ export default function App() {
     }
   }
 
-  async function handleEditPost(id, newContent) {
-  try {
-    const res = await updatePost(id, newContent);
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, content: res.data.content } : p))
-    );
-    enqueueSnackbar("Post updated", { variant: "success" });
-  } catch (e) {
-    enqueueSnackbar("Failed to update post", { variant: "error" });
+  async function handleEditPost(id, newTitle, newContent) {
+    try {
+      const res = await updatePost(id, newTitle, newContent);
+      setPosts((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, title: res.data.title, content: res.data.content } : p))
+      );
+      enqueueSnackbar("Post updated", { variant: "success" });
+    } catch (e) {
+      enqueueSnackbar("Failed to update post", { variant: "error" });
+    }
   }
-}
+
   return (
-    <ContainerWrapper>
+    <ContainerWrapper fullWidth={view !== "login" && view !== "register"}>
       {view === "login" && <LoginForm switchToRegister={() => setView("register")} />}
       {view === "register" && <RegisterForm switchToLogin={() => setView("login")} />}
       {view === "posts" && (
@@ -86,9 +88,16 @@ export default function App() {
             </Button>
           </Box>
 
-          <PostInput newPost={newPost} setNewPost={setNewPost} onAdd={handleAddPost} />
-          <PostList posts={posts} onDelete={handleDeletePost} onEdit={handleEditPost} />
-
+          <PostInput
+            newPost={newPost}
+            setNewPost={setNewPost}
+            onAdd={handleAddPost}
+          />
+          <PostList
+            posts={posts}
+            onDelete={handleDeletePost}
+            onEdit={handleEditPost}
+          />
         </Box>
       )}
     </ContainerWrapper>
