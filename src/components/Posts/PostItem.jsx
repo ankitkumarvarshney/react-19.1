@@ -2,6 +2,7 @@ import { ListItem, Box, Stack, IconButton, Divider } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostDisplay from "./PostDisplay";
+import useAuth from "../../hooks/useAuth";
 import PostEditForm from "./PostEditForm";
 
 export default function PostItem({
@@ -16,6 +17,7 @@ export default function PostItem({
     setEditTitle,
     setEditContent
 }) {
+    const { user } = useAuth();
     return (
         <Box>
             <ListItem
@@ -34,7 +36,7 @@ export default function PostItem({
                     },
                 }}
                 secondaryAction={
-                    !isEditing && (
+                    !isEditing && user && post.user && String(user.id) === String(post.user.id) && (
                         <Stack direction="row" spacing={1}>
                             <IconButton color="primary" onClick={() => onEditStart(post)}>
                                 <EditIcon />

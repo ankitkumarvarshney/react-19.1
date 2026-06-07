@@ -28,9 +28,16 @@ export default function PostDisplay({ post }) {
                 </Stack>
             }
             secondary={
-                <Typography variant="body1" sx={{ color: "#333", mt: 0.25 }}>
-                    {post.content}
-                </Typography>
+                <>
+                    <Typography variant="body1" sx={{ color: "#333", mt: 0.25 }}>
+                        {post.content}
+                    </Typography>
+                    {post.user && (
+                        <Typography variant="caption" sx={{ color: "#666", mt: 1, display: "block" }}>
+                            Created by: {post.user.email || "Unknown"}
+                        </Typography>
+                    )}
+                </>
             }
         />
     );

@@ -5,7 +5,7 @@ import { login } from "../../api/api";
 import useAuth from "../../hooks/useAuth";
 
 export default function LoginForm({ switchToRegister }) {
-  const { setToken } = useAuth();
+  const { setToken, setUser } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState("");
@@ -16,6 +16,7 @@ export default function LoginForm({ switchToRegister }) {
     try {
       const res = await login(email, password);
       setToken(res.data.token);
+      if (res.data.user) setUser(res.data.user);
       enqueueSnackbar("Logged in successfully!", { variant: "success" });
     } catch (e) {
       enqueueSnackbar(e.response?.data?.message || "Login failed", { variant: "error" });
